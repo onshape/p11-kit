@@ -771,7 +771,10 @@ main (int argc,
 	p11_testx (test_token_slot, "/unneeded", "/token/slot");
 
 	p11_fixture (NULL, NULL);
-	p11_test (test_not_writable, "/token/not-writable");
+	/* Don't run this test when under fakeroot */
+	if (!getenv ("FAKED_MODE")) {
+		p11_test (test_not_writable, "/token/not-writable");
+	}
 	p11_test (test_writable_no_exist, "/token/writable-no-exist");
 
 	p11_fixture (setup_temp, teardown_temp);
